@@ -1,3 +1,3 @@
-#Chess
+# Chess
 
-<img src="/Users/mishadolbnin/CLionProjects/chess/example.png" width="300" >
+<img src="/example.png">
