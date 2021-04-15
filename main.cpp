@@ -19,6 +19,15 @@ struct Figure{
     bool death = false;
 };
 
+vector<vector<string>> positions = {{"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1"},
+                                    {"a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2"},
+                                    {"a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3"},
+                                    {"a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4"},
+                                    {"a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5"},
+                                    {"a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6"},
+                                    {"a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"},
+                                    {"a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"}};
+
 void print_len(int n, vector<Figure> arr){
     cout << n + 1 << " ";
     vector<Figure> line;
@@ -81,7 +90,7 @@ int main() {
             "/\\ \\__/\\ \\ \\ \\ \\/\\  __//\\__, `\\/\\__, `\\\n"
             "\\ \\____\\\\ \\_\\ \\_\\ \\____\\/\\____/\\/\\____/\n"
             " \\/____/ \\/_/\\/_/\\/____/\\/___/  \\/___/ " << endl; //Вывод заголовка
-    int starter;
+    bool starter;
     cout << "Начать новую игру?[1/0]: ";
     cin >> starter;
     if (starter == 0) {
@@ -124,6 +133,38 @@ int main() {
         cout << "Стартовая позиция фигуры: " << start_pos << endl;
         string end_pos = command.substr(2,2);
         cout << "Конечная позиция фигуры: " << end_pos << endl;
+
+
+
+
+        int x, y, x_end, y_end;
+        for (int i = 0; i < 8; ++i){
+            for (int j = 0; j < 8; ++j){
+                if (start_pos == positions[i][j]){
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+
+        for (int i = 0; i < 8; ++i){
+            for (int j = 0; j < 8; ++j){
+                if (end_pos == positions[i][j]){
+                    x_end = i;
+                    y_end = j;
+                }
+            }
+        }
+
+        for (int i = 0; i < arr.size(); ++i){
+            if ((arr[i].x == x) && (arr[i].y == y)) {
+                arr[i].x = x_end;
+                arr[i].y = y_end;
+            }
+        }
+
+
+
         print_table(arr);
     }
     return 0;
