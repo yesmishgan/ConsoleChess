@@ -24,7 +24,7 @@ void print_len(const int& n, const vector<Figure>& arr){
 
     cout << n + 1 << " ";
 
-    for (int i = 0; i < 8; ++i){
+    for (size_t i = 0; i < 8; ++i){
         bool flag = false;
         for (const auto & figure : line){
             if (figure.y == i){
@@ -52,7 +52,7 @@ void print_low_table(){
 
 void print_table(const vector<Figure>& arr){
     print_top_table();
-    for (int i = 7; i > 0; --i){
+    for (size_t i = 7; i > 0; --i){
         print_len(i, arr);
         print_sep_table();
     }
@@ -62,9 +62,9 @@ void print_table(const vector<Figure>& arr){
 }
 
 void step_figure(const string& start, const string& end, vector<Figure>& figures){
-    int x, y, x_end, y_end;
-    for (int i = 0; i < 8; ++i){
-        for (int j = 0; j < 8; ++j){
+    unsigned x, y, x_end, y_end;
+    for (size_t i = 0; i < 8; ++i){
+        for (size_t j = 0; j < 8; ++j){
             if (start == positions[i][j]){
                 x = i;
                 y = j;
@@ -72,8 +72,8 @@ void step_figure(const string& start, const string& end, vector<Figure>& figures
         }
     }
 
-    for (int i = 0; i < 8; ++i){
-        for (int j = 0; j < 8; ++j){
+    for (size_t i = 0; i < 8; ++i){
+        for (size_t j = 0; j < 8; ++j){
             if (end == positions[i][j]){
                 x_end = i;
                 y_end = j;
@@ -81,16 +81,16 @@ void step_figure(const string& start, const string& end, vector<Figure>& figures
         }
     }
 
-    for (int i = 0; i < figures.size(); ++i){
-        if ((figures[i].x == x_end) && (figures[i].y == y_end)) {
-            figures[i].death = true;
+    for (auto & figure : figures){
+        if ((figure.x == x_end) && (figure.y == y_end)) {
+            figure.death = true;
         }
     }
 
-    for (int i = 0; i < figures.size(); ++i){
-        if ((figures[i].x == x) && (figures[i].y == y)) {
-            figures[i].x = x_end;
-            figures[i].y = y_end;
+    for (auto & figure : figures){
+        if ((figure.x == x) && (figure.y == y)) {
+            figure.x = x_end;
+            figure.y = y_end;
         }
     }
 }
@@ -110,19 +110,21 @@ int main() {
         return 0;
     }
 
+    vector<string> history;
+
     ////Заполняем доску фигурами
     vector<Figure> arr;
-    for (int i = 0; i < 8; ++i) {
+    for (size_t i = 0; i < 8; ++i) {
         Figure elem(1, i, "♟");
         arr.push_back(elem);
     }
-    for (int i = 0; i < 8; ++i) {
+    for (size_t i = 0; i < 8; ++i) {
         Figure elem(6, i);
         arr.push_back(elem);
     }
     vector<string> name_of_figure_b = {"♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"};
     vector<string> name_of_figure_w = {"♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"};
-    for (int i = 0; i < 8; ++i){
+    for (size_t i = 0; i < 8; ++i){
         Figure elem1(7, i, name_of_figure_w[i]);
         Figure elem2(0, i, name_of_figure_b[i]);
         arr.push_back(elem1);
@@ -141,24 +143,67 @@ int main() {
             cout << "Ход черных:" << endl;
         }
         cin >> command;
+        history.push_back(command);
         if (command == "stop"){
+            for (const string& elem : history){
+                cout << elem << endl;
+            }
             break;
         }
         else {
             counter_of_steps += 1;
         }
-        cout << endl << endl << endl;
-        string start_pos = command.substr(0,2);
-        cout << "Стартовая позиция фигуры: " << start_pos << endl;
-        string end_pos = command.substr(2,2);
-        cout << "Конечная позиция фигуры: " << end_pos << endl;
+        if (command == "0-0"){
+            cout << "0-0" << endl << endl;
+            if (counter_of_steps % 2 == 1) {
+                /*
+                int x_1, y_1, x_2, y_2;
+                bool flag = true;
+                for (size_t i = 0; i < 8; ++i){
+                    for (size_t j = 0; j < 8; ++j){
+                        if ("e1" == positions[i][j]){
+                            x_1 = i;
+                            y_1 = j;
+                        }
+                        if ("h1" == positions[i][j]){
+                            x_2 = i;
+                            y_2 = j;
+                        }
+                    }
+                }
+                for (size_t i = x_1 + 1; i < x_2; ++i){
+                    for (auto & figure : arr){
+                        if ((figure.x == i) && (figure.y == y_2)) {
+                                flag = false;
+                        }
+                    }
+                }*/
+                step_figure("e1", "g1", arr);
+                step_figure("h1", "f1", arr);
+            } else{
+                step_figure("e8", "g8", arr);
+                step_figure("h8", "f8", arr);
+            }
+        } else if (command == "0-0-0"){
+            cout << "0-0-0" << endl << endl;
+            if (counter_of_steps % 2 == 1) {
+                step_figure("e1", "c1", arr);
+                step_figure("a1", "d1", arr);
+            } else{
+                step_figure("e8", "c8", arr);
+                step_figure("a8", "d8", arr);
+            }
+        } else {
+            cout << endl << endl << endl;
+            string start_pos = command.substr(0, 2);
+            cout << "Стартовая позиция фигуры: " << start_pos << endl;
+            string end_pos = command.substr(2, 2);
+            cout << "Конечная позиция фигуры: " << end_pos << endl;
 
-        step_figure(start_pos, end_pos, arr);
+            step_figure(start_pos, end_pos, arr);
+        }
 
         print_table(arr);
     }
     return 0;
 }
-
-//figure.death == false /// 0/1 == 0
-// figure.death // figure.death == true

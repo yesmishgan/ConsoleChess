@@ -9,7 +9,7 @@ using namespace std;
 
 class Figure {
 public:
-    Figure(int X, int Y, string name){
+    Figure(unsigned X, unsigned Y, string name){
         x = X;
         y = Y;
         name_figure = name;
@@ -18,8 +18,8 @@ public:
         x = X;
         y = Y;
     }
-    int x = 0;
-    int y = 0;
+    unsigned x = 0;
+    unsigned y = 0;
     string name_figure = "♙";
     bool death = false;
 };
